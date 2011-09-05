@@ -1,0 +1,5 @@
+28 лип 2011 21:34:03,589 INFO  ~ Starting D:\devel\projects\java\play\yabe
+28 лип 2011 21:34:06,034 WARN  ~ You're running Play! in DEV mode
+28 лип 2011 21:34:06,449 INFO  ~ Listening for HTTP on port 9000 (Waiting a first request to start) ...
+28 лип 2011 21:34:24,256 INFO  ~ Connected to jdbc:h2:mem:play;MODE=MYSQL;LOCK_MODE=0
+28 лип 2011 21:34:30,990 INFO  ~ Application 'yabe' is now started !
