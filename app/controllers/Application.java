@@ -1,9 +1,13 @@
 package controllers;
 
 import play.*;
+import play.cache.Cache;
 import play.data.validation.Required;
+import play.libs.Codec;
+import play.libs.Images;
 import play.mvc.*;
 
+import java.awt.Image;
 import java.util.*;
 
 import models.*;
@@ -24,11 +28,14 @@ public class Application extends Controller {
 	
 	public static void show(Long id){
 		Post post = Post.findById(id);
-		render(post);
+		String randomId = Codec.UUID();
+		render(post, randomId);
 	}
 
-	public static void postComment(Long postId, @Required String author, @Required String content) {
+	public static void postComment(Long postId, @Required(message="Author is required") String author, @Required(message="Content is required")String content, @Required(message="Please type the code") String code, String randomId) {
 	    Post post = Post.findById(postId);
+	    
+	    validation.equals(code, Cache.get(randomId)).message("Invalid code");    
 	    
 	    if (validation.hasErrors()) {
 	        render("Application/show.html", post);
@@ -38,6 +45,15 @@ public class Application extends Controller {
 	    
 	    flash.success("Thanks for posting %s", author);
 	    
+	    Cache.delete(randomId);
+	    
 	    show(postId);
+	}
+	
+	public static void captcha(String id){
+		Images.Captcha captcha = Images.captcha();
+		String code = captcha.getText("#E4EAFD");
+		Cache.set(id, code, "10mn");
+		renderBinary(captcha);
 	}
 }
