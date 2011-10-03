@@ -5,11 +5,18 @@
 # Home page
 GET     /                                       Application.index
 
-GET /posts/{id}									Application.show
+GET     /posts/{<[0-9]+>id}             		Application.show
+
+GET     /posts/{tag}                    		Application.listTagged
 
 POST /posts/{postId}/comments					Application.postComment
 
 GET /captcha									Application.captcha
+
+
+#Administration
+GET		/admin/?								Admin.index
+
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
@@ -17,5 +24,11 @@ GET     /favicon.ico                            404
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
+# Import CRUD routes
+*		/admin									module:crud
+
+
+# Import secure routes
+*		/										module:secure
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
